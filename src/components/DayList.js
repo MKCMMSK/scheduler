@@ -5,12 +5,12 @@ export default function DayList(props) {
   const dayList = props.days.map(day => {
     return (
       <DayListItem 
-      id={props.key}
+      key={day.id}
       name={day.name} 
       spots={day.spots} 
       selected={day.id === props.value}
-      setDay={event => props.onChange(props.id)}/>
-  );
+      setDay={event => props.onChange(day.name)}/>
+    );
   });
   
   return dayList;
