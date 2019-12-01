@@ -3,18 +3,13 @@ import axios from 'axios'
 import "components/Application.scss";
 import DayList from "components/DayList.js";
 import Appointment from "components/Appointment/index";
-import { getAppointmentsForDay, getInterview } from "../helpers/selectors";
-import useVisualMode from "../hooks/useVisualMode";
+import { getAppointmentsForDay, getInterview, getInterviewersByDay } from "../helpers/selectors";
 import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
 import Form from "components/Appointment/Form";
 
 export default function Application(props) {
-  const EMPTY = "EMPTY";
-  const SHOW = "SHOW";
-  const { mode, transition, back } = useVisualMode(
-    props.interview ? SHOW : EMPTY
-  );
+ 
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -37,15 +32,17 @@ export default function Application(props) {
   const appointments = getAppointmentsForDay(state, state.day);
   const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
-  
-    return (
+    const interviewers = getInterviewersByDay(state, state.day);
+    {return (
       <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={interviewers}
+        bookInterview={bookInterview}
       />
-    );
+    )}
   });
 
   return (
@@ -71,30 +68,30 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-      {mode === EMPTY && <Empty onAdd={props.onAdd, transition("CREATE")} />}
-      {mode === SHOW && (
-        <Show
-          student={props.interview.student}
-          interviewer={props.interview.interviewer}
-        />
-      )}
-      {mode === "CREATE" && (
-        <Form
-        interviewers={[]}
-        />
-      )}
-        {
-          getAppointmentsForDay(state, state.day).map((appointment)=> {
-            if (appointment.interview) {
-              return <Appointment key={appointment.id} {...appointment}/>
-            } else {
-              return <Appointment key={appointment.id} time={appointment.time}/>
-            }
-          })
-        }
+        {schedule}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
   );
+
+  
+  function bookInterview(id, interview) {
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    
+    setState({
+      ...state,
+      appointments
+    });
+    return axios.put(`/api/appointments/${id}`, { interview });
+  }
+
 
 }
