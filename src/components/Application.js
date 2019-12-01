@@ -76,7 +76,7 @@ export default function Application(props) {
 
   
   function bookInterview(id, interview) {
-
+    console.log(id, interview, "this is inside book interview")
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
