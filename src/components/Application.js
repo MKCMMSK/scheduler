@@ -41,6 +41,7 @@ export default function Application(props) {
         interview={interview}
         interviewers={interviewers}
         bookInterview={bookInterview}
+        onDelete={cancelInterview}
       />
     )}
   });
@@ -76,7 +77,6 @@ export default function Application(props) {
 
   
   function bookInterview(id, interview) {
-    console.log(id, interview, "this is inside book interview")
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -92,6 +92,18 @@ export default function Application(props) {
     });
     return axios.put(`/api/appointments/${id}`, { interview });
   }
+  function cancelInterview(id) {
+    // const nullAppointment = {
+    //   ...state.appointments[id],
+    //   interview: { ...state.appointments[id].interview }
+    // };
 
+    // const appointments = {
+    //   ...state.appointments,
+    //   [id]: nullAppointment
+    // };
+    
+    return axios.delete(`/api/appointments/${id}`);
+  }
 
 }

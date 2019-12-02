@@ -5,7 +5,7 @@ import Show from "components/Appointment/Show";
 import Empty from "components/Appointment/Empty";
 import Form from "components/Appointment/Form";
 import useVisualMode from "hooks/useVisualMode";
-import getInterviewersByDay from "helpers/selectors";
+import Status from "components/Appointment/Status";
 
 export default function Appointment (props){
   const EMPTY = "EMPTY";
@@ -25,6 +25,7 @@ export default function Appointment (props){
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          onDelete={() => props.onDelete(props.id)}
         />
       )}
       {mode === CREATE && (
@@ -34,6 +35,9 @@ export default function Appointment (props){
         onSave={save}
         
         />
+      )}
+      {mode === SAVING && (
+        <Status message="Saving"/>
       )}
       
     </article>
@@ -45,7 +49,6 @@ export default function Appointment (props){
       student: name,
       interviewer
     };
-    console.log(name, interviewer, " this is inside save");
     props.bookInterview(props.id,interview)
     .then((res)=> transition(SHOW))
   }
