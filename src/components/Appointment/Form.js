@@ -6,14 +6,16 @@ import Button from "components/Button";
 export default function Form (props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] = useState(props.name || "");
-  console.log(interviewer, " this is form interviewer");
+  console.log(interviewer, "in form");
+
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
         <form autoComplete="off">
           <input
             className="appointment__create-input text--s  emi-bold"
-            name={name}
+            name="name"
+            value={name}
             type="text"
             placeholder="Enter Student Name"
             onChange={(event) => setName(event.target.value)}
@@ -22,10 +24,7 @@ export default function Form (props) {
         <InterviewerList 
           interviewers={props.interviewers} 
           value={interviewer} 
-          onChange={(id) => {
-            setInterviewer(id);
-            }
-          } 
+          onChange={setInterviewer} 
         />
       </section>
       <section className="appointment__card-right">

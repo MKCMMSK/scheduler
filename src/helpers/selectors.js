@@ -28,16 +28,11 @@ export function getInterview(state, interview) {
 
 export function getInterviewersByDay(state, day) {
   const result = [];
+ 
   state.days.forEach(dayObj => {
     if(dayObj.name === day) {
-
-      dayObj.appointments.map ((appointmentNo) => {
-        if (state.appointments[appointmentNo].interview !== null) {
-          if(state.interviewers[state.appointments[appointmentNo].interview.interviewer] !== undefined){
-
-            result.push(state.interviewers[state.appointments[appointmentNo].interview.interviewer])
-          }
-        }
+      dayObj.interviewers.map ((id) => {
+        result.push(state.interviewers[id])
       })
     }
   })
