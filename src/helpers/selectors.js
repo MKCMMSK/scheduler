@@ -1,8 +1,6 @@
 export function getAppointmentsForDay(state, day) {
   const result = [];
-  console.log(state.days, "state.days in selectors")
   state.days.forEach(dayObj => {
-    console.log(dayObj, " dayobj inside selectors");
     if(dayObj.name === day) {
       dayObj.appointments.map ((appointmentNo) => {
         result.push(state.appointments[appointmentNo])
@@ -21,7 +19,7 @@ export function getDayByAppointmentId(state, appointmentId) {
       }
     })
   });
-  return dayId;
+  return Number(dayId) - 1;
 }
 
 export function getInterview(state, interview) {

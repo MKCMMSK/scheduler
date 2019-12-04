@@ -1,10 +1,14 @@
 import axios from "axios";
 import {useReducer,useEffect} from "react";
-import {getDaybyAppointmentId, getDayByAppointmentId} from "helpers/selectors";
+import {getDayByAppointmentId, getAppointmentsForDay} from "helpers/selectors";
+
+
+
 export default function useApplicationData() {
   const SET_DAY = "SET_DAY";
   const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
   const SET_INTERVIEW = "SET_INTERVIEW";
+  const UPDATE_SPOTS = "UPDATE_SPOTS";
   // const getSpotsFromDays = (day) => {
   //   const spotsTaken = day.appointments;
   //   let spotsFree = 0;
@@ -28,7 +32,6 @@ export default function useApplicationData() {
     days: [],
     appointments: {},
     interviewers: {},
-    spots: 5
   });
 
   function reducer(state, action){
@@ -51,17 +54,27 @@ export default function useApplicationData() {
 
         const appointments = {
           ...state.appointments,
-          [action.id]: {
-            ...state.appointments[action.id],
+          [action.appointmentId]: {
+            ...state.appointments[action.appointmentId],
             interview: action.interview === null ? null : { ...action.interview }
           },
         };
-        const dayId = getDayByAppointmentId(state, action.id);
+        
+        return {
+          ...state,
+          appointments,
+        };
+      }
+      case UPDATE_SPOTS:{
+
+        const dayId = getDayByAppointmentId(state, action.appointmentId);
+        console.log(state.days, "state of days");
+        const spots = getAppointmentsForDay(state, state.day);
+
         const day = {
           ...state.days[dayId],
-          spots: action.spots
+          spots: spots.filter((item)=> item.interview === null).length
         }
-
         const days = state.days.map((dayObj, index) => {
           if (index === (day.id -1)) {
             return day;
@@ -69,36 +82,48 @@ export default function useApplicationData() {
           return dayObj;
         });
 
-        return {
+        return ({
           ...state,
-          appointments,
           days
-        };
+        });
+
       }
+      
       default:
         return state;
     }
   }
   
 
-  function bookInterview(id, interview) {
+  function bookInterview(appointmentId, interview) {
    
-    return axios.put(`/api/appointments/${id}`, { interview })
-    .then(() => {dispatch({
-      type: SET_INTERVIEW,
-      id,
-      interview,
-      spots
-    })});
+    return axios.put(`/api/appointments/${appointmentId}`, { interview })
+    .then(() => {
+      
+      dispatch({
+        type: SET_INTERVIEW,
+        appointmentId,
+        interview
+      });
+      dispatch({
+        type: UPDATE_SPOTS,
+        appointmentId
+      })
+    });
   }
 
-  function cancelInterview(id) {
-    return axios.delete(`/api/appointments/${id}`).then(() => {dispatch({
-      type: SET_INTERVIEW,
-      id,
-      interview: null,
-      spots
-    })});
+  function cancelInterview(appointmentId) {
+    return axios.delete(`/api/appointments/${appointmentId}`).then(() => {
+      dispatch({
+        type: SET_INTERVIEW,
+        appointmentId,
+        interview: null,
+      });
+      dispatch({
+        type: UPDATE_SPOTS,
+        appointmentId
+      });
+  });
   }
 
   const setDay = day => dispatch({

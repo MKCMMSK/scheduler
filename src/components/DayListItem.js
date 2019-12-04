@@ -26,6 +26,5 @@ const formatSpots = function(spots) {
   } else {
     spotsLeft = spots + " spots remaining";
   }
-
   return spotsLeft;
 }
