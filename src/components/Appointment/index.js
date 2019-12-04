@@ -45,7 +45,7 @@ export default function Appointment (props){
       transition(ERROR_SAVE, true);
     })
   }
-
+  
   return (
     
     <article className="appointment">
@@ -94,7 +94,9 @@ export default function Appointment (props){
       )}
       {mode === ERROR_SAVE && (
         <Error
-        message = "Error saving the appointment"/>
+        message = "Error saving the appointment"
+        onClose = {back}
+        />
       )}
       {mode === ERROR_DELETE && (
         <Error

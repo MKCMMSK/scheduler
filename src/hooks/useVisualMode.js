@@ -8,10 +8,7 @@ export default function useVisualMode(initial) {
   const transition = (value, replace = false) => {
     if (replace) {
       const newHistory = previousMode.slice(0, previousMode.length - 1);
-      
-      // previousMode.pop();
       setPreviousMode([...newHistory, value]);
-      console.log(previousMode, "new previous mode");
     } else {
       setPreviousMode([...previousMode, value]);
     }
@@ -21,15 +18,7 @@ export default function useVisualMode(initial) {
     const newHistory = previousMode.slice(0, previousMode.length - 1);
     const prevMode = previousMode.slice(previousMode.length - 2)[0];
     setPreviousMode(newHistory);
-    setMode(previousMode);
-
-    // previousMode.pop();
-    // if (previousMode.length === 0) {
-    //   setMode(initialValue);
-    // } else {
-    //   setMode(previousMode[previousMode.length-1]);
-    // }
-    
+    setMode(prevMode);
   } 
   return { mode, transition, back };
 }

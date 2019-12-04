@@ -6,8 +6,7 @@ import Button from "components/Button";
 export default function Form (props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] = useState(props.name || "");
-  console.log(interviewer, "in form");
-
+  const interviewerId = (interviewer || {}).id;
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -23,7 +22,7 @@ export default function Form (props) {
         </form>
         <InterviewerList 
           interviewers={props.interviewers} 
-          value={interviewer} 
+          interviewerId={interviewerId} 
           onChange={setInterviewer} 
         />
       </section>
@@ -32,7 +31,7 @@ export default function Form (props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={() => props.onSave(name, interviewer)}>
+          <Button confirm onClick={() => props.onSave(name, interviewer.id)}>
             Save
           </Button>
         </section>
