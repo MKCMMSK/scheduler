@@ -7,6 +7,8 @@ export default function Form (props) {
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [name, setName] = useState(props.name || "");
   const interviewerId = (interviewer || {}).id;
+  const [denyText, setDenyText] = useState("");
+  
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -18,7 +20,11 @@ export default function Form (props) {
             type="text"
             placeholder="Enter Student Name"
             onChange={(event) => setName(event.target.value)}
+            data-testid="student-name-input"
+
           />
+          <section className="appointment__validation">{denyText}</section>
+
         </form>
         <InterviewerList 
           interviewers={props.interviewers} 
@@ -31,7 +37,14 @@ export default function Form (props) {
           <Button danger onClick={cancel}>
             Cancel
           </Button>
-          <Button confirm onClick={() => props.onSave(name, interviewer.id)}>
+          <Button confirm onClick={() => {
+            if (name !== "") {
+              props.onSave(name, interviewer.id)
+              setDenyText("");
+            } else {
+              setDenyText("Student name cannot be blank");
+            }
+          }}>
             Save
           </Button>
         </section>
