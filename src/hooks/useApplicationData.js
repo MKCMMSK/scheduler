@@ -68,7 +68,6 @@ export default function useApplicationData() {
       case UPDATE_SPOTS:{
 
         const dayId = getDayByAppointmentId(state, action.appointmentId);
-        console.log(state.days, "state of days");
         const spots = getAppointmentsForDay(state, state.day);
 
         const day = {
