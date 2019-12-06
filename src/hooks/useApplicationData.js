@@ -2,7 +2,11 @@ import axios from "axios";
 import {useReducer,useEffect} from "react";
 import {getDayByAppointmentId, getAppointmentsForDay} from "helpers/selectors";
 
-
+import reducer, {
+  SET_DAY,
+  SET_APPLICATION_DATA,
+  SET_INTERVIEW
+} from "reducers/application";
 
 export default function useApplicationData() {
   const SET_DAY = "SET_DAY";
