@@ -1,4 +1,7 @@
-function reducer(state, action){
+import {getDayByAppointmentId, getAppointmentsForDay} from "helpers/selectors";
+
+
+export default function reducer(state, action){
   switch (action.type) {
     case SET_DAY:{
       return {
