@@ -1,12 +1,14 @@
 import {getDayByAppointmentId, getAppointmentsForDay} from "helpers/selectors";
 
 
-export default function reducer(state, action){
-  const SET_DAY = "SET_DAY";
-  const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
-  const SET_INTERVIEW = "SET_INTERVIEW";
-  const UPDATE_SPOTS = "UPDATE_SPOTS";
-  
+const SET_DAY = "SET_DAY";
+const SET_APPLICATION_DATA = "SET_APPLICATION_DATA";
+const SET_INTERVIEW = "SET_INTERVIEW";
+const UPDATE_SPOTS = "UPDATE_SPOTS";
+
+export {SET_DAY, SET_APPLICATION_DATA, SET_INTERVIEW,UPDATE_SPOTS}
+export function reducer(state, action){
+
   switch (action.type) {
     case SET_DAY:{
       return {
@@ -57,10 +59,10 @@ export default function reducer(state, action){
         ...state,
         days
       });
-
     }
-    
-    default:
-      return state;
+    default:{
+      throw new Error("tried to reduce with unsupported action type");
+    }
   }
+
 }

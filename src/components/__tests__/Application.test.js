@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import reducer from "reducers/application";
 
 
 import { render, cleanup, waitForElement, fireEvent, getByText, prettyDOM, getAllByTestId, getByAltText, getByPlaceholderText, getByTestId, queryByTestId,getByDisplayValue} from "@testing-library/react";
@@ -159,5 +160,14 @@ describe ("Application", () => {
     );
     expect(getByText(appointment, "Error deleting the appointment")).toBeInTheDocument();
   })
+
+
+describe("Application Reducer", () => {
+  it("thows an error with an unsupported type", () => {
+    expect(() => reducer({}, { type: null })).toThrowError(
+      /tried to reduce with unsupported action type/i
+    );
+  });
+});
 })
 
