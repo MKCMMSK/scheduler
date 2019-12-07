@@ -21,3 +21,12 @@ npm test
 ```sh
 npm run storybook
 ```
+
+![Home page](/docs/loadInPage.png)
+![Adding new appointment](/docs/Adding.png)
+![Saving](/docs/Saving.png)
+![FilledInData](/docs/FilledInData.png)
+![Saved](/docs/Saved.png)
+![Confirmation on delete](/docs/DeletePrompt.png)
+![Deleting](/docs/Deleting.png)
+![Deleted](/docs/Deleted.png)
