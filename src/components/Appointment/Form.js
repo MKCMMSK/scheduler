@@ -21,7 +21,6 @@ export default function Form (props) {
             placeholder="Enter Student Name"
             onChange={(event) => setName(event.target.value)}
             data-testid="student-name-input"
-
           />
           <section className="appointment__validation">{denyText}</section>
 
@@ -38,7 +37,9 @@ export default function Form (props) {
             Cancel
           </Button>
           <Button confirm onClick={() => {
-            if (name !== "") {
+            if (interviewer === null) {
+              setDenyText("You haven't set an interviewer yet");
+            } else if (name !== "") {
               props.onSave(name, interviewer.id)
               setDenyText("");
             } else {
@@ -52,14 +53,12 @@ export default function Form (props) {
     </main>
   );
 
-
-
-  function reset () {
+  function reset () { //resets name and interviewers
     setName("");
     setInterviewer(null);
   } 
 
-  function cancel() {
+  function cancel () { //on cancel, reset name and interviewers and invoke .conCancel()
     reset();
     props.onCancel();
   }

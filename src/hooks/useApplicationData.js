@@ -21,7 +21,7 @@ export default function useApplicationData() {
   
   
 
-  function bookInterview(appointmentId, interview) {
+  function bookInterview(appointmentId, interview) { // books interview
    
     return axios.put(`/api/appointments/${appointmentId}`, { interview })
     .then(() => {
@@ -38,7 +38,7 @@ export default function useApplicationData() {
     });
   }
 
-  function cancelInterview(appointmentId) {
+  function cancelInterview(appointmentId) { // cancels interview
     return axios.delete(`/api/appointments/${appointmentId}`).then(() => {
       dispatch({
         type: SET_INTERVIEW,
